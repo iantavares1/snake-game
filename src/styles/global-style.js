@@ -18,6 +18,7 @@ export const GlobalStyle = createGlobalStyle`
     font-family: "Inter", sans-serif;
     width: 100vw;
     height: 100vh;
+    background: #101010;
     display: grid;
     place-content: center;
   }
