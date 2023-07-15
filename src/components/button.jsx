@@ -5,7 +5,7 @@ const Container = styled.button`
   width: fit-content;
   padding: 1rem;
   background: #fff;
-  color: black;
+  color: #000;
   font-weight: 500;
   border-radius: 1rem;
   cursor: pointer;
