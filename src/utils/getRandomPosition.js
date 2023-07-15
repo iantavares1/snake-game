@@ -1,10 +1,15 @@
 export const getRandomPosition = (max) => {
   const random = () => Math.floor(Math.random() * max)
-  let x = random()
-  let y = random()
+  let x = random() + 1
+  let y = random() + 1
 
-  x = x % 2 === 0 ? x : x - 1
-  y = y % 2 === 0 ? y : y - 1
+  if (x % 2 === 1) {
+    x += 1
+  }
+
+  if (y % 2 === 1) {
+    y += 1
+  }
 
   return { x, y }
 }
