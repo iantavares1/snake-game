@@ -11,10 +11,12 @@ const Container = styled.button`
   cursor: pointer;
 `
 
-export const Button = ({ children, onClick }) => {
+export const Button = ({ children, onClick, style }) => {
   return (
     <>
-      <Container onClick={onClick}>{children}</Container>
+      <Container style={style} onClick={onClick}>
+        {children}
+      </Container>
     </>
   )
 }
