@@ -10,8 +10,9 @@ import {
   Element as Tail,
   Element as Fruit,
 } from '../components/Element'
-import { Settings } from '../components/Settings'
+
 import { Modal } from '../components/Modal'
+import { Settings } from '../components/Settings'
 import { Pause } from '../components/icons/Pause'
 import { Gear } from '../components/icons/Gear'
 
