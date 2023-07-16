@@ -25,13 +25,6 @@ const Container = styled.div`
   }
 `
 
-const Label = styled.label`
-  padding-left: 1rem;
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-`
-
 const Select = styled.select`
   all: unset;
   width: 50%;
@@ -40,7 +33,7 @@ const Select = styled.select`
   transition: all 0.1s;
   border: solid 2px white;
   border-radius: 1rem;
-  margin-bottom: 3rem;
+  margin: 1.5rem 0 3rem;
 
   &:hover,
   &:focus {
@@ -91,7 +84,7 @@ export const Settings = ({ onSelect, isOpen, gameProps }) => {
         />
         <h1>Settings</h1>
       </Header>
-      <Label htmlFor="difficulty">Difficulty</Label>
+      <h2>Difficulty</h2>
       <Select
         name="difficulty"
         defaultValue={gameProps.difficulty}
@@ -102,7 +95,7 @@ export const Settings = ({ onSelect, isOpen, gameProps }) => {
         <option value="hard">Hard</option>
         <option value="impossible">Impossible</option>
       </Select>
-      <Label htmlFor="box_color">Box Color</Label>
+      <h2>Box Color</h2>
       <Select
         name="box_color"
         defaultValue={gameProps.style.box_color}
@@ -117,7 +110,7 @@ export const Settings = ({ onSelect, isOpen, gameProps }) => {
         <option value="white">White</option>
         <option value="yellow">Yellow</option>
       </Select>
-      <Label htmlFor="snake_color">Snake Color</Label>
+      <h2>Snake Color</h2>
       <Select
         name="snake_color"
         defaultValue={gameProps.style.snake_color}
@@ -132,7 +125,7 @@ export const Settings = ({ onSelect, isOpen, gameProps }) => {
         <option value="white">White</option>
         <option value="yellow">Yellow</option>
       </Select>
-      <Label htmlFor="fruit_color">Fruit Color</Label>
+      <h2>Fruit Color</h2>
       <Select
         name="fruit_color"
         defaultValue={gameProps.style.fruit_color}
