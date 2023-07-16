@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { Game } from './pages/Game'
+import { Game } from './components/Game'
 
 const Container = styled.div`
   width: 100vw;

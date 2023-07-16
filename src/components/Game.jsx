@@ -5,16 +5,12 @@ import { styled } from 'styled-components'
 import { BOX_SIZE } from '../settings/constants'
 import { getRandomPosition } from '../utils/getRandomPosition'
 
-import {
-  Element as Snake,
-  Element as Tail,
-  Element as Fruit,
-} from '../components/Element'
+import { Element as Snake, Element as Tail, Element as Fruit } from './Element'
 
-import { Modal } from '../components/Modal'
-import { Settings } from '../components/Settings'
-import { Pause } from '../components/icons/Pause'
-import { Gear } from '../components/icons/Gear'
+import { Modal } from './Modal'
+import { Settings } from './Settings'
+import { Pause } from './icons/Pause'
+import { Gear } from './icons/Gear'
 
 const Container = styled.div`
   position: relative;
