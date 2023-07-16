@@ -1,15 +1,9 @@
-export const SettingsIcon = ({ onClick }) => {
+export const Gear = ({ onClick, style }) => {
   return (
     <>
       <svg
         onClick={onClick}
-        style={{
-          cursor: 'pointer',
-          position: 'absolute',
-          left: '0',
-          top: '50%',
-          transform: 'translateY(-50%)',
-        }}
+        style={{ ...style }}
         width="40"
         height="40"
         viewBox="0 0 40 40"
