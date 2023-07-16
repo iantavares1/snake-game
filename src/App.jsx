@@ -11,9 +11,6 @@ import {
   Element as Fruit,
 } from './components/Element'
 
-import { Settings } from './components/Settings'
-import { Modal } from './components/Modal'
-import { Gear } from './components/icons/Gear'
 import { Pause } from './components/icons/Pause'
 
 const Container = styled.div`
@@ -87,7 +84,6 @@ function App() {
 
   const [isPaused, setIsPaused] = useState(false)
   const [isOver, setIsOver] = useState(false)
-  const [settingsPage, setSettingsPage] = useState(false)
 
   const handleUpdateGameProps = (updatedProps) => {
     const updatedStoredProps = { ...updatedProps }
@@ -111,11 +107,6 @@ function App() {
     setIsPaused(false)
     setIsOver(true)
     setScore(0)
-  }
-
-  const handleSettings = () => {
-    setIsPaused((prev) => (prev === true ? prev : true))
-    setSettingsPage((prev) => !prev)
   }
 
   const handleKeyDown = (key) => {
@@ -245,12 +236,6 @@ function App() {
     <Container>
       <Header>
         <div>
-          <Button
-            onClick={() => handleSettings()}
-            style={{ marginRight: '2rem' }}
-          >
-            <Gear />
-          </Button>
           <Button onClick={() => handleIsPaused()}>
             <Pause />
           </Button>
@@ -259,7 +244,7 @@ function App() {
         <h1>Max: {maxScore}</h1>
       </Header>
       <Box size={BOX_SIZE} color={gameProps.style.box_color}>
-        {!isOver && (
+        {!isOver ? (
           <>
             <Snake props={snakeProps} />
             {snakeProps.tail.map((position, i) => (
@@ -273,32 +258,10 @@ function App() {
             ))}
             <Fruit props={fruitProps} />
           </>
-        )}
-        {settingsPage && (
-          <Settings
-            onSelect={setGameProps}
-            isOpen={handleSettings}
-            gameProps={gameProps}
-          />
-        )}
-        {isPaused && !isOver && (
-          <Modal onClick={() => handleIsPaused()}>
-            <h1>Paused</h1>
-            <Button onClick={() => handleIsPaused()} type={1}>
-              Resume
-            </Button>
-            <Button onClick={() => handleTryAgain()} type={2}>
-              Restart
-            </Button>
-          </Modal>
-        )}
-        {isOver && (
-          <Modal>
-            <h1>Game Over</h1>
-            <Button onClick={() => handleTryAgain()} type={1}>
-              Restart
-            </Button>
-          </Modal>
+        ) : (
+          <Button onClick={handleTryAgain} type={1}>
+            Try Again
+          </Button>
         )}
       </Box>
     </Container>
