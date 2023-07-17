@@ -21,6 +21,7 @@ export default createGlobalStyle`
     background: ${({ theme }) => theme.bg.primary};
     display: grid;
     place-content: center;
+    overflow: hidden;
 
     @media (max-width: 1060px) {
     display: flex;

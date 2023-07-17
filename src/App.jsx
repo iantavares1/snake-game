@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { styled, ThemeProvider } from 'styled-components'
 
 import GlobalStyle from './styles/global-style'
@@ -89,6 +89,8 @@ function App() {
   const [isOver, setIsOver] = useState(false)
   const [settingsIsOpen, setSettingsIsOpen] = useState(false)
 
+  const touchStartRef = useRef({ x: 0, y: 0 })
+
   const handleUpdateGameProps = (updatedProps) => {
     const updatedStoredProps = { ...updatedProps }
 
@@ -98,7 +100,7 @@ function App() {
     )
   }
 
-  const handleKeyDown = (key) => {
+  const handleKeyDown = ({ key }) => {
     setSnakeProps((prev) => {
       if (!key.includes('Arrow')) {
         return prev
@@ -110,17 +112,16 @@ function App() {
         left: 'right',
         right: 'left',
       }
-
       if (
         direction !== prev.direction &&
         direction !== oppositeDirections[prev.direction]
       ) {
         return { ...prev, direction }
       }
-
       return prev
     })
   }
+
   const handleIsPaused = () => setIsPaused((prev) => !prev)
 
   const handleTryAgain = () => {
@@ -142,11 +143,48 @@ function App() {
     setSettingsIsOpen((prev) => !prev)
   }
 
+  const handleTouchStart = (e) => {
+    const { clientX, clientY } = e.changedTouches[0]
+    touchStartRef.current = { x: clientX, y: clientY }
+  }
+
+  const handleTouchEnd = (e) => {
+    const { clientX, clientY } = e.changedTouches[0]
+
+    const startX = touchStartRef.current.x
+    const startY = touchStartRef.current.y
+
+    const deltaX = startX - clientX
+    const deltaY = startY - clientY
+
+    const checkGraterDelta = () => {
+      const x = deltaX < 0 ? deltaX * -1 : deltaX
+      const y = deltaY < 0 ? deltaY * -1 : deltaY
+
+      return x > y ? 'x' : 'y'
+    }
+
+    const getNewDirection = () => {
+      const delta = checkGraterDelta()
+      if (delta === 'x') {
+        return deltaX < 0 ? { key: 'ArrowRight' } : { key: 'ArrowLeft' }
+      } else {
+        return deltaY < 0 ? { key: 'ArrowDown' } : { key: 'ArrowUp' }
+      }
+    }
+
+    handleKeyDown(getNewDirection())
+  }
+
   useEffect(() => {
-    window.addEventListener('keydown', (e) => handleKeyDown(e.key))
+    document.addEventListener('keydown', handleKeyDown)
+    document.addEventListener('touchstart', handleTouchStart)
+    document.addEventListener('touchend', handleTouchEnd)
 
     return () => {
-      window.removeEventListener('keydown', (e) => handleKeyDown(e.key))
+      document.removeEventListener('keydown', handleKeyDown)
+      document.removeEventListener('touchstart', handleTouchStart)
+      document.removeEventListener('touchend', handleTouchEnd)
     }
   }, [])
 
