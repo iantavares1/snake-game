@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
+import { styled, ThemeProvider } from 'styled-components'
 
-import { styled } from 'styled-components'
-
-import { BOX_SIZE } from './settings/constants'
+import GlobalStyle from './styles/global-style'
+import dark from './styles/themes/dark'
+import light from './styles/themes/light.js'
+import { BOX_SIZE, ELEMENT_SIZE } from './settings/constants'
 import { getRandomPosition } from './utils/getRandomPosition'
 
 import {
@@ -11,13 +13,30 @@ import {
   Element as Fruit,
 } from './components/Element'
 
+import { Settings } from './components/Settings'
+import { Modal } from './components/Modal'
+import { Button } from './components/Button'
 import { Pause } from './components/icons/Pause'
+import { Gear } from './components/icons/Gear'
 
 const Container = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  color: #fff;
+  color: ${({ theme }) => theme.text.primary};
+
+  @media (max-width: 768px) {
+    zoom: 0.8;
+  }
+  @media (min-width: 1920px) {
+    zoom: 1.2;
+  }
+  @media (min-width: 2300px) {
+    zoom: 1.4;
+  }
+  @media (max-height: 2300px) {
+    zoom: 0.8;
+  }
 `
 
 const Header = styled.header`
@@ -30,32 +49,10 @@ const Header = styled.header`
 const Box = styled.div`
   overflow: hidden;
   position: relative;
-  width: ${({ size }) => size}rem;
-  height: ${({ size }) => size}rem;
+  width: ${BOX_SIZE}rem;
+  height: ${BOX_SIZE}rem;
   background: ${({ color }) => color};
-`
-
-const Button = styled.button`
-  all: unset;
-  width: fit-content;
-  border-radius: 1rem;
-  cursor: pointer;
-
-  ${({ type }) =>
-    type === 1 &&
-    ` 
-    padding: 1rem;
-    background: #fff;
-    color : #000
-  `}
-
-  ${({ type }) =>
-    type === 2 &&
-    `   
-  padding: 1rem;
-  background: red; 
-  color: #fff;
-`}
+  outline: solid 0.4rem ${({ border }) => border};
 `
 
 function App() {
@@ -65,7 +62,13 @@ function App() {
   const getMaxScore = () => window.localStorage.getItem('max_score')
 
   const initialGameProps = getGameProps() || {
-    style: { box_color: 'purple', snake_color: 'white', fruit_color: 'yellow' },
+    theme: 'dark',
+    style: {
+      box_color: 'purple',
+      border_color: 'none',
+      snake_color: 'white',
+      fruit_color: 'yellow',
+    },
     difficulty: 'normal',
   }
   const [gameProps, setGameProps] = useState(initialGameProps)
@@ -84,6 +87,7 @@ function App() {
 
   const [isPaused, setIsPaused] = useState(false)
   const [isOver, setIsOver] = useState(false)
+  const [settingsIsOpen, setSettingsIsOpen] = useState(false)
 
   const handleUpdateGameProps = (updatedProps) => {
     const updatedStoredProps = { ...updatedProps }
@@ -92,21 +96,6 @@ function App() {
       'game_props',
       JSON.stringify(updatedStoredProps),
     )
-  }
-
-  const handleIsPaused = () => setIsPaused((prev) => !prev)
-
-  const handleTryAgain = () => {
-    setSnakeProps((prev) => ({
-      ...prev,
-      tail: [],
-      direction: '',
-      position: getRandomPosition(),
-    }))
-    setFruitProps((prev) => ({ ...prev, position: getRandomPosition() }))
-    setIsPaused(false)
-    setIsOver(true)
-    setScore(0)
   }
 
   const handleKeyDown = (key) => {
@@ -131,6 +120,25 @@ function App() {
 
       return prev
     })
+  }
+  const handleIsPaused = () => setIsPaused((prev) => !prev)
+
+  const handleTryAgain = () => {
+    setIsPaused(false)
+    setIsOver(false)
+    setScore(0)
+    setSnakeProps((prev) => ({
+      ...prev,
+      tail: [],
+      direction: '',
+      position: getRandomPosition(),
+    }))
+    setFruitProps((prev) => ({ ...prev, position: getRandomPosition() }))
+  }
+
+  const handleSettingsIsOpen = () => {
+    setIsPaused(true)
+    setSettingsIsOpen((prev) => !prev)
   }
 
   useEffect(() => {
@@ -168,13 +176,13 @@ function App() {
         const getPositions = () => {
           const newHead = { ...snakeProps.position }
           if (snakeProps.direction === 'up') {
-            newHead.y = newHead.y - 2
+            newHead.y = newHead.y - ELEMENT_SIZE
           } else if (snakeProps.direction === 'down') {
-            newHead.y = newHead.y + 2
+            newHead.y = newHead.y + ELEMENT_SIZE
           } else if (snakeProps.direction === 'left') {
-            newHead.x = newHead.x - 2
+            newHead.x = newHead.x - ELEMENT_SIZE
           } else {
-            newHead.x = newHead.x + 2
+            newHead.x = newHead.x + ELEMENT_SIZE
           }
 
           if (
@@ -188,7 +196,7 @@ function App() {
             }))
             setFruitProps((prev) => ({
               ...prev,
-              position: getRandomPosition(60),
+              position: getRandomPosition(),
             }))
           } else {
             setSnakeProps((prev) => {
@@ -224,47 +232,91 @@ function App() {
         )
 
     setIsOver(
-      positionX === 0 ||
-        positionY === 0 ||
-        positionX === 62 ||
-        positionY === 62 ||
+      positionX < 0 ||
+        positionY < 0 ||
+        positionX === BOX_SIZE ||
+        positionY === BOX_SIZE ||
         isCollisionSelf,
     )
   }, [snakeProps.tail, snakeProps.position])
 
   return (
-    <Container>
-      <Header>
-        <div>
-          <Button onClick={() => handleIsPaused()}>
-            <Pause />
-          </Button>
-        </div>
-        <h1>{score}</h1>
-        <h1>Max: {maxScore}</h1>
-      </Header>
-      <Box size={BOX_SIZE} color={gameProps.style.box_color}>
-        {!isOver ? (
-          <>
-            <Snake props={snakeProps} />
-            {snakeProps.tail.map((position, i) => (
-              <Tail
-                key={i}
-                props={{
-                  position: { ...position },
-                  color: snakeProps.color,
+    <>
+      <ThemeProvider theme={gameProps.theme === 'dark' ? dark : light}>
+        <GlobalStyle />
+        <Container>
+          <Header>
+            <div>
+              <Button
+                onClick={handleSettingsIsOpen}
+                style={{ marginRight: `1rem` }}
+              >
+                <Gear />
+              </Button>
+              <Button onClick={handleIsPaused}>
+                <Pause />
+              </Button>
+            </div>
+            <h1>{score}</h1>
+            <h1>Max: {maxScore}</h1>
+          </Header>
+          <Box
+            color={gameProps.style.box_color}
+            border={gameProps.style.border_color}
+          >
+            {settingsIsOpen && (
+              <Settings onSelect={setGameProps} gameProps={gameProps} />
+            )}
+            {!isOver && (
+              <>
+                <Snake props={snakeProps} />
+                {snakeProps.tail.map((position, i) => (
+                  <Tail
+                    key={i}
+                    props={{
+                      position: { ...position },
+                      color: snakeProps.color,
+                    }}
+                  />
+                ))}
+                <Fruit props={fruitProps} />
+              </>
+            )}
+            {!isOver && isPaused && (
+              <Modal
+                onClick={() => {
+                  if (settingsIsOpen) {
+                    handleSettingsIsOpen()
+                  }
                 }}
-              />
-            ))}
-            <Fruit props={fruitProps} />
-          </>
-        ) : (
-          <Button onClick={handleTryAgain} type={1}>
-            Try Again
-          </Button>
-        )}
-      </Box>
-    </Container>
+              >
+                <h1>Paused</h1>
+                <Button onClick={handleIsPaused} type={1}>
+                  Resume
+                </Button>
+                <Button onClick={handleTryAgain} type={2}>
+                  Restart
+                </Button>
+              </Modal>
+            )}
+            {isOver && (
+              <Modal
+                onClick={() => {
+                  if (settingsIsOpen) {
+                    handleSettingsIsOpen()
+                  }
+                }}
+              >
+                <h1>Game Over</h1>
+                <Button onClick={handleTryAgain} type={1}>
+                  Restart
+                </Button>
+              </Modal>
+            )}
+          </Box>
+        </Container>
+      </ThemeProvider>
+    </>
   )
 }
 
