@@ -143,40 +143,39 @@ function App() {
     setSettingsIsOpen((prev) => !prev)
   }
 
-  const handleTouchStart = (e) => {
-    const { clientX, clientY } = e.changedTouches[0]
-    touchStartRef.current = { x: clientX, y: clientY }
-  }
-
-  const handleTouchEnd = (e) => {
-    const { clientX, clientY } = e.changedTouches[0]
-
-    const startX = touchStartRef.current.x
-    const startY = touchStartRef.current.y
-
-    const deltaX = startX - clientX
-    const deltaY = startY - clientY
-
-    const checkGraterDelta = () => {
-      const x = deltaX < 0 ? deltaX * -1 : deltaX
-      const y = deltaY < 0 ? deltaY * -1 : deltaY
-
-      return x > y ? 'x' : 'y'
-    }
-
-    const getNewDirection = () => {
-      const delta = checkGraterDelta()
-      if (delta === 'x') {
-        return deltaX < 0 ? { key: 'ArrowRight' } : { key: 'ArrowLeft' }
-      } else {
-        return deltaY < 0 ? { key: 'ArrowDown' } : { key: 'ArrowUp' }
-      }
-    }
-
-    handleKeyDown(getNewDirection())
-  }
-
   useEffect(() => {
+    const handleTouchStart = (e) => {
+      const { clientX, clientY } = e.changedTouches[0]
+      touchStartRef.current = { x: clientX, y: clientY }
+    }
+
+    const handleTouchEnd = (e) => {
+      const { clientX, clientY } = e.changedTouches[0]
+
+      const startX = touchStartRef.current.x
+      const startY = touchStartRef.current.y
+
+      const deltaX = startX - clientX
+      const deltaY = startY - clientY
+
+      const checkGraterDelta = () => {
+        const x = deltaX < 0 ? deltaX * -1 : deltaX
+        const y = deltaY < 0 ? deltaY * -1 : deltaY
+
+        return x > y ? 'x' : 'y'
+      }
+
+      const getNewDirection = () => {
+        const delta = checkGraterDelta()
+        if (delta === 'x') {
+          return deltaX < 0 ? { key: 'ArrowRight' } : { key: 'ArrowLeft' }
+        } else {
+          return deltaY < 0 ? { key: 'ArrowDown' } : { key: 'ArrowUp' }
+        }
+      }
+
+      handleKeyDown(getNewDirection())
+    }
     document.addEventListener('keydown', handleKeyDown)
     document.addEventListener('touchstart', handleTouchStart)
     document.addEventListener('touchend', handleTouchEnd)
@@ -205,12 +204,12 @@ function App() {
     if (!isOver && !isPaused && snakeProps.direction !== '') {
       const time =
         gameProps.difficulty === 'easy'
-          ? 60
+          ? 100
           : gameProps.difficulty === 'normal'
-          ? 45
+          ? 70
           : gameProps.difficulty === 'hard'
-          ? 30
-          : 18
+          ? 50
+          : 30
       const handleInterval = setInterval(() => {
         const getPositions = () => {
           const newHead = { ...snakeProps.position }
