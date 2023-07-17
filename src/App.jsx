@@ -127,6 +127,7 @@ function App() {
     setIsPaused(false)
     setIsOver(false)
     setScore(0)
+    setMaxScore(getMaxScore())
     setSnakeProps((prev) => ({
       ...prev,
       tail: [],
@@ -150,9 +151,9 @@ function App() {
   }, [])
 
   useEffect(() => {
-    if (score > maxScore) {
+    const prevMaxScore = getMaxScore()
+    if (score > prevMaxScore) {
       window.localStorage.setItem('max_score', score)
-      setMaxScore(score)
     }
   }, [score, maxScore])
 
@@ -189,6 +190,20 @@ function App() {
             newHead.x === fruitProps.position.x &&
             newHead.y === fruitProps.position.y
           ) {
+            const getFruitPosition = () => {
+              let position = getRandomPosition()
+
+              while (
+                snakeProps.tail.some(
+                  (tailPiece) =>
+                    tailPiece.x === position.x && tailPiece.y === position.y,
+                )
+              ) {
+                position = getRandomPosition()
+              }
+
+              return position
+            }
             setScore((prev) => prev + 1)
             setSnakeProps((prev) => ({
               ...prev,
@@ -196,7 +211,7 @@ function App() {
             }))
             setFruitProps((prev) => ({
               ...prev,
-              position: getRandomPosition(),
+              position: getFruitPosition(),
             }))
           } else {
             setSnakeProps((prev) => {
