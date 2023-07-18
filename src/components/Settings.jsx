@@ -14,7 +14,7 @@ const Container = styled.div`
 
 const Header = styled.header`
   width: 100%;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,8 +23,8 @@ const Header = styled.header`
 const StyledSelect = styled.select`
   all: unset;
   width: 50%;
-  margin-bottom: 2rem;
-  margin-top: 0.5rem;
+  margin-bottom: 1.2rem;
+  margin-top: 0.2rem;
   padding: 1rem;
 
   border: solid 0.2rem ${({ theme }) => theme.text.primary};
@@ -62,11 +62,28 @@ export const Settings = ({ onSelect, gameProps }) => {
         info={{ id: 2, name: 'difficulty', default: gameProps.difficulty }}
         options={['easy', 'normal', 'hard', 'impossible']}
         onChange={(value) =>
-          onSelect((prev) => ({ ...prev, difficulty: value }))
+          onSelect((prev) => ({
+            ...prev,
+            style: { ...prev.style, element_shape: value },
+          }))
         }
       />
       <Select
-        info={{ id: 3, name: 'box-color', default: gameProps.style.box_color }}
+        info={{
+          id: 3,
+          name: 'element-shape',
+          default: gameProps.style.element_shape,
+        }}
+        options={['circle', 'square']}
+        onChange={(value) =>
+          onSelect((prev) => ({
+            ...prev,
+            style: { ...prev.style, element_shape: value },
+          }))
+        }
+      />
+      <Select
+        info={{ id: 4, name: 'box-color', default: gameProps.style.box_color }}
         onChange={(value) =>
           onSelect((prev) => ({
             ...prev,
@@ -76,7 +93,7 @@ export const Settings = ({ onSelect, gameProps }) => {
       />
       <Select
         info={{
-          id: 4,
+          id: 5,
           name: 'border-color',
           default: gameProps.style.border_color,
         }}
@@ -90,7 +107,7 @@ export const Settings = ({ onSelect, gameProps }) => {
       />
       <Select
         info={{
-          id: 5,
+          id: 6,
           name: 'snake-color',
           default: gameProps.style.snake_color,
         }}
@@ -103,7 +120,7 @@ export const Settings = ({ onSelect, gameProps }) => {
       />
       <Select
         info={{
-          id: 6,
+          id: 7,
           name: 'fruit-color',
           default: gameProps.style.fruit_color,
         }}

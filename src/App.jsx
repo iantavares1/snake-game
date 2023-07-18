@@ -65,6 +65,7 @@ function App() {
     theme: 'dark',
     style: {
       box_color: 'purple',
+      element_shape: 'square',
       border_color: 'none',
       snake_color: 'white',
       fruit_color: 'yellow',
@@ -196,8 +197,16 @@ function App() {
 
   useEffect(() => {
     handleUpdateGameProps(gameProps)
-    setSnakeProps((prev) => ({ ...prev, color: gameProps.style.snake_color }))
-    setFruitProps((prev) => ({ ...prev, color: gameProps.style.fruit_color }))
+    setSnakeProps((prev) => ({
+      ...prev,
+      color: gameProps.style.snake_color,
+      shape: gameProps.style.element_shape,
+    }))
+    setFruitProps((prev) => ({
+      ...prev,
+      color: gameProps.style.fruit_color,
+      shape: gameProps.style.element_shape,
+    }))
   }, [gameProps])
 
   useEffect(() => {
@@ -328,6 +337,7 @@ function App() {
                     props={{
                       position: { ...position },
                       color: snakeProps.color,
+                      shape: snakeProps.shape,
                     }}
                   />
                 ))}
