@@ -25,17 +25,23 @@ const Container = styled.div`
   flex-direction: column;
   color: ${({ theme }) => theme.text.primary};
 
-  @media (max-width: 768px) {
-    zoom: 0.8;
+  @media (max-width: 710px) {
+    zoom: 0.9;
   }
-  @media (min-width: 1920px) {
+  @media (min-width: 1440px) {
     zoom: 1.2;
   }
-  @media (min-width: 2300px) {
-    zoom: 1.4;
+  @media (min-width: 1920px) {
+    zoom: 1.3;
   }
-  @media (max-height: 2300px) {
-    zoom: 0.8;
+  @media (min-width: 2300px) {
+    zoom: 1.45;
+  }
+  @media (min-width: 2560px) {
+    zoom: 1.6;
+  }
+  @media (max-height: 950px) {
+    zoom: 1;
   }
 `
 
@@ -44,6 +50,25 @@ const Header = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: 582px) {
+    zoom: 0.9;
+  }
+  @media (max-width: 398px) {
+    zoom: 0.75;
+  }
+  @media (max-width: 315px) {
+    zoom: 0.65;
+  }
+  @media (max-height: 652px) {
+    zoom: 0.7;
+  }
+  @media (max-height: 440px) {
+    zoom: 0.6;
+  }
+  @media (max-height: 368px) {
+    zoom: 0.5;
+  }
 `
 
 const Box = styled.div`
@@ -53,6 +78,74 @@ const Box = styled.div`
   height: ${BOX_SIZE}rem;
   background: ${({ color }) => color};
   outline: solid 0.4rem ${({ border }) => border};
+
+  @media (max-width: 630px) {
+    zoom: 0.9;
+  }
+  @media (max-width: 582px) {
+    zoom: 0.8;
+  }
+  @media (max-width: 502px) {
+    zoom: 0.75;
+  }
+  @media (max-width: 458px) {
+    zoom: 0.7;
+  }
+  @media (max-width: 440px) {
+    zoom: 0.65;
+  }
+  @media (max-width: 406px) {
+    zoom: 0.6;
+  }
+  @media (max-width: 378px) {
+    zoom: 0.55;
+  }
+  @media (max-width: 342px) {
+    zoom: 0.5;
+  }
+  @media (max-width: 315px) {
+    zoom: 0.45;
+  }
+  @media (max-width: 300px) {
+    zoom: 0.4;
+  }
+
+  @media (max-height: 726px) {
+    zoom: 0.85;
+  }
+  @media (max-height: 652px) {
+    zoom: 0.8;
+  }
+  @media (max-height: 620px) {
+    zoom: 0.75;
+  }
+  @media (max-height: 600px) {
+    zoom: 0.7;
+  }
+  @media (max-height: 576px) {
+    zoom: 0.65;
+  }
+  @media (max-height: 550px) {
+    zoom: 0.6;
+  }
+  @media (max-height: 495px) {
+    zoom: 0.55;
+  }
+  @media (max-height: 432px) {
+    zoom: 0.5;
+  }
+  @media (max-height: 412px) {
+    zoom: 0.45;
+  }
+  @media (max-height: 398px) {
+    zoom: 0.4;
+  }
+  @media (max-height: 368px) {
+    zoom: 0.35;
+  }
+  @media (max-height: 320px) {
+    zoom: 0.3;
+  }
 `
 
 function App() {

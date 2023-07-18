@@ -25,7 +25,11 @@ export default createGlobalStyle`
 
     @media (max-width: 1060px) {
     display: flex;
-    padding-top: 6rem;
+    padding-top:6rem;
+  }
+  @media (max-width: 458px) {
+    padding-top:4.5rem;
+
   }
   }
 `
