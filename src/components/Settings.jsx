@@ -64,7 +64,7 @@ export const Settings = ({ onSelect, gameProps }) => {
         onChange={(value) =>
           onSelect((prev) => ({
             ...prev,
-            style: { ...prev.style, element_shape: value },
+            difficulty: value,
           }))
         }
       />
